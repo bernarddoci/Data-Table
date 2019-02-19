@@ -1,80 +1,55 @@
 <template>
-  <div class="table">
-    <div class="table-header">
-      <div class="header-data hide-on-mobile id">ID</div>
-      <div class="header-data name">Name</div>
-      <div class="header-data description">Desc.</div>
-      <div class="header-data hide-on-mobile date">Date</div>
-      <div class="header-data amount">Amount</div>
-      <div class="header-data edit">Edit</div>
-    </div>
-    <div class="table-body" v-for='transaction in transactions' :key='transaction.id'>
-      <div class="body-data hide-on-mobile id">{{ transaction.id }}</div>
-      <div class="body-data name">{{ transaction.fullName }}</div>
-      <div class="body-data description">{{ transaction.description }}</div>
-      <div class="body-data hide-on-mobile date">{{ transaction.date }}</div>
-      <div class="body-data amount">{{ transaction.amount }} €</div>
-      <div class="body-data edit">
-        <Modal :transaction="transaction"/>
+  <div>
+    <Search />
+    <div class="table">
+      <hr/>
+      <div class="table-header">
+        <div class="header-data hide-on-mobile id">ID</div>
+        <div class="header-data name">Full Name</div>
+        <div class="header-data description">Desc.</div>
+        <div class="header-data hide-on-mobile date">Date</div>
+        <div class="header-data amount">Amount</div>
+        <div class="header-data edit">Edit</div>
+      </div>
+      <div class="table-body" v-for='(transaction, index) in transactions' :key='transaction.ID'>
+        <div class="body-data hide-on-mobile id">{{ transaction.ID }}</div>
+        <div class="body-data name">{{ transaction.Name }}</div>
+        <div class="body-data description">{{ transaction.Description }}</div>
+        <div class="body-data hide-on-mobile date">{{ dateFormat(transaction.Date) }}</div>
+        <div class="body-data amount">{{ transaction.Amount }} €</div>
+        <div class="body-data edit">
+          <modal-edit :transaction="transaction" :index="index"/>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Modal from "./Modal";
+import { mapGetters, mapActions } from "vuex";
+import ModalEdit from "./ModalEdit";
+import Search from "./Search";
 export default {
   name: "Table",
   components: {
-    Modal
+    ModalEdit,
+    Search
   },
-  data() {
-    return {
-      transactions: [
-        {
-          id: 123,
-          fullName: "Bernard Doci",
-          description: "This is payment is for programming course",
-          date: new Date().toLocaleTimeString(),
-          amount: 25
-        },
-        {
-          id: 213,
-          fullName: "Nerxhan Musliu",
-          description: "Hello World",
-          date: new Date().toLocaleTimeString(),
-          amount: 25
-        },
-        {
-          id: 321,
-          fullName: "Endrit Zhuri",
-          description: "",
-          date: new Date().toLocaleTimeString(),
-          amount: 25
-        },
-        {
-          id: 665,
-          fullName: "Yllka Abdullahi",
-          description: "How are you???",
-          date: new Date().toLocaleTimeString(),
-          amount: 25
-        },
-        {
-          id: 543,
-          fullName: "Fiona Pepiqi",
-          description: "Good bye",
-          date: new Date().toLocaleTimeString(),
-          amount: 25
-        },
-        {
-          id: 765,
-          fullName: "Arita Thaqi",
-          description: "Bye bye",
-          date: new Date().toLocaleTimeString(),
-          amount: 25
-        }
-      ]
-    };
+  computed: {
+    ...mapGetters([
+      'transactions'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'getTransactions'
+    ]),
+    dateFormat(date) {
+      return new Date(date).toLocaleTimeString('en-US');
+    }
+  },
+  created() {
+    this.getTransactions();
   }
 };
 </script>
@@ -83,7 +58,10 @@ export default {
 $borderStyle: 1px solid #2c3e50;
 .table {
   width: 80%;
+  height: 600px;
+  overflow-y: scroll;
   margin: 2% auto;
+  clear: both;
   .table-header,
   .table-body {
     display: flex;

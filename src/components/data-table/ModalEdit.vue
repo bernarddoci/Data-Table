@@ -3,18 +3,17 @@
     <button class="btn-edit" v-on:click="$refs.modal.open()">Edit</button>
     <sweet-modal ref="modal" :enable-mobile-fullscreen="true" overlay-theme="light" title="Edit">
       <form>
-        First name:<br>
-        <input type="text" name="firstname" :value="info.fullName" disabled>
+        <label for="firstName">Full Name: </label><br>
+        <input id="firstName" type="text" name="firstname" :value="info.Name" disabled>
         <br>
-        Amount €:<br>
-        <input type="number" name="amount" min="0" v-model="info.amount">
+        <label for="amount">Amount €: </label><br>
+        <input id="amount" type="number" name="amount" step="0.01" min="0" v-model="info.Amount">
         <br>
-        Descriptions:<br>
-        <textarea name="descriptions" v-model="info.description"/>
+        <label for="description">Descriptions: </label><br>
+        <textarea id="description" name="descriptions" v-model="info.Description"/>
         <br><br>
         <button slot="button" @click="closeModal" class="cancel-btn">Cancel</button>
-        <button slot="button" @click="closeModal" class="delete-btn">Delete</button>
-        <button slot="button" @click="closeModal" class="save-btn">Save</button>
+        <button slot="button" @click="updateData" class="save-btn">Save</button>
       </form>
     </sweet-modal>
   </div>
@@ -22,6 +21,7 @@
 
 <script>
 import { SweetModal, SweetModalTab } from 'sweet-modal-vue'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: 'Modal',
@@ -35,12 +35,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'updateTransaction'
+    ]),
     closeModal(e) {
       e.preventDefault();
       this.$refs.modal.close();
     },
-    updateData() {
-
+    updateData(e) {
+      this.closeModal(e);
+      this.updateTransaction({id: this.index, data: this.info});
     }
   },
   props: {
@@ -50,6 +54,11 @@ export default {
       default: function() {
         return {};
       }
+    },
+    index: {
+      type: Number,
+      required: true,
+      default: 0
     }
   }
 }
@@ -70,10 +79,12 @@ $white: #fff;
   outline: none;
 }
 .cancel-btn, .save-btn, .delete-btn {
+  height: 40px;
+  width: 80px;
   margin: 2px;
-  padding: 2%;
   color: $white;
   border-radius: 20px;
+  border: 1px solid $blue;
   cursor: pointer;
   float: right;
   font-size: 1rem;
@@ -90,10 +101,25 @@ $white: #fff;
 }
 input,
 textarea {
-  padding: 1%;
-  border: 1px solid $blue;
   font-size: 16px;
+  padding-left: 1%;
+  border-radius: 20px;
+  border: 1px solid $blue;
+  outline: none;
+}
+input {
+  height: 34px;
   width: 196px;
+}
+textarea {
+  height: 100px;
+  width: 190px;
+  padding: 2%;
+}
+@media only screen and (max-width: 575px) {
+  input, textarea {
+    width: 100%;
+  }
 }
 
 </style>
