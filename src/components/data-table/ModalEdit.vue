@@ -7,7 +7,7 @@
         <input id="firstName" type="text" name="firstname" :value="info.Name" disabled>
         <br>
         <label for="amount">Amount €: </label><br>
-        <input id="amount" type="number" name="amount" step="0.01" min="0" v-model="info.Amount">
+        <input id="amount" type="number" name="amount" step="0.01" min="0" v-model.number="info.Amount">
         <br>
         <label for="description">Descriptions: </label><br>
         <textarea id="description" name="descriptions" v-model="info.Description"/>
@@ -31,8 +31,14 @@ export default {
   },
   data() {
     return {
-      info: this.transaction
+      info: this.transData
     }
+  },
+  computed: {
+    ...mapGetters([
+      'transactions',
+      'userIndex'
+    ])
   },
   methods: {
     ...mapActions([
@@ -44,21 +50,24 @@ export default {
     },
     updateData(e) {
       this.closeModal(e);
-      this.updateTransaction({id: this.index, data: this.info});
+      if(this.userIndex != null) {
+        this.updateTransaction({id: this.userIndex, data: this.info});
+      } else {
+        const index = this.transactions.findIndex(element => {return element.ID == this.info.ID});
+        this.updateTransaction({id: index, data: this.info});
+      }
     }
   },
+  created() {
+    
+  },
   props: {
-    transaction: {
+    transData: {
       type: Object,
       required: true,
       default: function() {
         return {};
       }
-    },
-    index: {
-      type: Number,
-      required: true,
-      default: 0
     }
   }
 }

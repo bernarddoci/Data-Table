@@ -2,10 +2,6 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import VueFire from 'vuefire';
-import './firebase';
-
-Vue.use(VueFire);
 
 import './assets/css/animation.css';
 import './assets/css/fontello-codes.css';

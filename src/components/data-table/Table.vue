@@ -3,22 +3,25 @@
     <Search />
     <div class="table">
       <hr/>
-      <div class="table-header">
-        <div class="header-data hide-on-mobile id">ID</div>
-        <div class="header-data name">Full Name</div>
-        <div class="header-data description">Desc.</div>
-        <div class="header-data hide-on-mobile date">Date</div>
-        <div class="header-data amount">Amount</div>
-        <div class="header-data edit">Edit</div>
-      </div>
-      <div class="table-body" v-for='(transaction, index) in transactions' :key='transaction.ID'>
-        <div class="body-data hide-on-mobile id">{{ transaction.ID }}</div>
-        <div class="body-data name">{{ transaction.Name }}</div>
-        <div class="body-data description">{{ transaction.Description }}</div>
-        <div class="body-data hide-on-mobile date">{{ dateFormat(transaction.Date) }}</div>
-        <div class="body-data amount">{{ transaction.Amount }} €</div>
-        <div class="body-data edit">
-          <modal-edit :transaction="transaction" :index="index"/>
+      <Loader v-if="loader"/>
+      <div v-else>
+        <div class="table-header">
+          <div class="header-data hide-on-mobile id">ID</div>
+          <div class="header-data name">Full Name</div>
+          <div class="header-data description">Desc.</div>
+          <div class="header-data hide-on-mobile date">Date</div>
+          <div class="header-data amount">Amount</div>
+          <div class="header-data edit">Edit</div>
+        </div>
+        <div class="table-body" v-for='transaction in transactions' :key='transaction.ID'>
+          <div class="body-data hide-on-mobile id">{{ transaction.ID }}</div>
+          <div class="body-data name">{{ transaction.Name }}</div>
+          <div class="body-data description">{{ transaction.Description }}</div>
+          <div class="body-data hide-on-mobile date">{{ dateFormat(transaction.Date) }}</div>
+          <div class="body-data amount">{{ transaction.Amount }} €</div>
+          <div class="body-data edit">
+            <modal-edit :transData="transaction" :transactions="transactions"/>
+          </div>
         </div>
       </div>
     </div>
@@ -29,15 +32,18 @@
 import { mapGetters, mapActions } from "vuex";
 import ModalEdit from "./ModalEdit";
 import Search from "./Search";
+import Loader from "../Loader";
 export default {
   name: "Table",
   components: {
     ModalEdit,
-    Search
+    Search,
+    Loader
   },
   computed: {
     ...mapGetters([
-      'transactions'
+      'transactions',
+      'loader'
     ])
   },
   methods: {
@@ -82,14 +88,13 @@ $borderStyle: 1px solid #2c3e50;
   }
   .header-data,
   .body-data {
-    padding: 0 1%;
     text-align: "left"; 
-    margin: 2% 0;
+    margin: 1%;
   }
-  .id,
   .edit {
     width: 5%;
   }
+  .id,
   .name,
   .description {
     width: 15%;
@@ -97,6 +102,9 @@ $borderStyle: 1px solid #2c3e50;
   .date,
   .amount {
     width: 10%;
+  }
+  .id {
+    font-size: 12px;
   }
 }
 @media only screen and (max-width: 900px) {
@@ -107,7 +115,7 @@ $borderStyle: 1px solid #2c3e50;
     }
     .header-data,
     .body-data {
-      width: 25%;
+      width: 20%;
       padding: 0;
     }
   }
@@ -115,6 +123,7 @@ $borderStyle: 1px solid #2c3e50;
 @media only screen and (max-width: 575px) {
   .table {
     font-size: 14px;
+    // margin: 5% 0;
     .table-body {
       flex-wrap: wrap;
     }
