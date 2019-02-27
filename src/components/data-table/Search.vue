@@ -1,14 +1,14 @@
 <template>
   <div class="search">
-    <input type="text" v-model="name" @keyup.enter="(e) => filterData('Name', name, e)" placeholder="Search by name" />
-    <button class="search-btn" @click="(e) => filterData('Name', name, e)"><i class="icon-search"></i></button>
+    <input type="text" v-model="name" @keyup.enter.prevent="filterData('Name', name)" placeholder="Search by name" />
+    <button class="search-btn" @click.prevent="filterData('Name', name)"><i class="icon-search"></i></button>
     <button class="show-btn" @click="toggle">{{ showFilterLabel }}</button>
     <transition name="fade">
       <div class="search-filters" v-if="showFilter">
-        <input type="text" v-model="id" @keyup.enter="(e) => filterData('ID', id, e)" placeholder="Filter by id" />
-        <button class="search-btn" @click="(e) => filterData('ID', id, e)"><i class="icon-search"></i></button>
-        <input type="number" v-model.number="amount" @keyup.enter="(e) => filterData('Amount', amount, e)" placeholder="Filter by amount" />
-        <button class="search-btn" @click="(e) => filterData('Amount', amount, e)"><i class="icon-search"></i></button>
+        <input type="text" v-model="id" @keyup.enter.prevent="filterData('ID', id)" placeholder="Filter by id" />
+        <button class="search-btn" @click.prevent="filterData('ID', id)"><i class="icon-search"></i></button>
+        <input type="number" v-model.number="amount" @keyup.enter.prevent="filterData('Amount', amount)" placeholder="Filter by amount" />
+        <button class="search-btn" @click.prevent="filterData('Amount', amount)"><i class="icon-search"></i></button>
       </div>
     </transition>
   </div>
@@ -34,8 +34,7 @@ export default {
     toggle() {
       this.showFilter = !this.showFilter;
     },
-    filterData(path, value, e) {
-      e.preventDefault();
+    filterData(path, value) {
       this.filterTransactions({path, value})
     }
   },
@@ -55,7 +54,7 @@ export default {
   input, button {
     margin: 5px;
     outline: none;
-    border: 2px solid #0191a9;
+    border: 1px solid #0191a9;
     border-radius: 20px;
   }
   input {
@@ -72,16 +71,15 @@ export default {
       border: 1px solid #0191a9;
     }
   }
-  .search-btn, .filter-btn {
-    background-color: rgb(248, 248, 248);
+  .search-btn {
+    background-color: #e2e2e2;
     color: black;
   }
   .search-btn {
     position: relative;
-    left: -44px;
+    left: -43px;
     height: 36px;
     border: none;
-    border-right: 2px solid #0191a9;
     border-left: 1px solid transparent;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -91,9 +89,6 @@ export default {
     position: relative;
     left: -43px;
     background-color: #08C0A8;
-  }
-  .filter-btn {
-    width: 75px;
   }
   .fade-enter-active, .fade-leave-active {
     transition: opacity 1s;

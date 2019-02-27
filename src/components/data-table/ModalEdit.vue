@@ -3,14 +3,14 @@
     <button class="btn-edit" v-on:click="$refs.modal.open()">Edit</button>
     <sweet-modal ref="modal" :enable-mobile-fullscreen="true" overlay-theme="light" title="Edit">
       <form>
-        <label for="firstName">Full Name: </label><br>
-        <input id="firstName" type="text" name="firstname" :value="info.Name" disabled>
+        <label for="name">Full Name: </label><br>
+        <input id="name" class="name" type="text" name="name" :value="info.Name" disabled>
         <br>
         <label for="amount">Amount €: </label><br>
-        <input id="amount" type="number" name="amount" step="0.01" min="0" v-model.number="info.Amount">
+        <input id="amount" class="amount" type="number" name="amount" step="0.01" min="0" v-model.number="info.Amount">
         <br>
         <label for="description">Descriptions: </label><br>
-        <textarea id="description" name="descriptions" v-model="info.Description"/>
+        <textarea id="description" class="description" name="descriptions" v-model="info.Description"/>
         <br><br>
         <button slot="button" @click="closeModal" class="cancel-btn">Cancel</button>
         <button slot="button" @click="updateData" class="save-btn">Save</button>
@@ -48,7 +48,7 @@ export default {
       e.preventDefault();
       this.$refs.modal.close();
     },
-    updateData(e) {
+    update(e) {
       this.closeModal(e);
       if(this.userIndex != null) {
         this.updateTransaction({id: this.userIndex, data: this.info});
@@ -57,9 +57,6 @@ export default {
         this.updateTransaction({id: index, data: this.info});
       }
     }
-  },
-  created() {
-    
   },
   props: {
     transData: {

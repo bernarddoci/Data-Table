@@ -51,7 +51,7 @@ export default {
       'getTransactions'
     ]),
     dateFormat(date) {
-      return new Date(date).toLocaleTimeString('en-US');
+      return new Date(date).toLocaleDateString('en-US');
     }
   },
   created() {

@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home.vue renders correctly 1`] = `
+<div
+  class="home"
+>
+  <img
+    alt="Vue logo"
+    class="logo"
+    src="../assets/logo.png"
+  />
+   
+  <h1>
+    Engineering Application
+  </h1>
+   
+  <button
+    class="show-table-btn"
+    to="/data-table"
+  >
+    
+    Show Table &gt;
+  
+  </button>
+</div>
+`;
