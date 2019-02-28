@@ -2,36 +2,40 @@ import API from "../util/API";
 
 const getTransactions = ({ state, commit }) => {
   state.loader = true;
-    API.get(".json")
-      .then(res => {
-        commit('getTransactions', res.data);
-      })
-      .catch(err => console.log('Error in getTransactions'));
+  API.get(".json")
+    .then(res => {
+      commit("getTransactions", res.data);
+    })
+    .catch(() => console.log("Error in getTransactions"));
 };
 
-const updateTransaction = ({ state, commit, dispatch }, payload) => {
+const updateTransaction = ({ state, dispatch }, payload) => {
   state.loader = true;
   API.put(`${payload.id}.json`, payload.data)
-    .then(res => {
-      dispatch('getTransactions');
+    .then(() => {
+      dispatch("getTransactions");
     })
-    .catch(err => console.log(err))
+    .catch(() => console.log("Error in updateTransaction"));
 };
 
 const filterTransactions = ({ state, commit }, payload) => {
   state.loader = true;
-  if(payload.path == 'Amount') {
+  if (payload.path == "Amount") {
     API.get(`.json?orderBy="Amount"&equalTo=${payload.value}&print=pretty`)
       .then(res => {
-        commit('getTransactionsByAmount', res.data);
+        commit("getTransactionsByAmount", res.data);
       })
-      .catch(err => console.log(err))
+      .catch(() => console.log("Error in filterTransactions"));
   } else {
     API.get(".json")
       .then(res => {
-        commit('filterTransactionsByValue', {data: res.data, key: payload.path, value: payload.value});
+        commit("filterTransactionsByValue", {
+          data: res.data,
+          key: payload.path,
+          value: payload.value
+        });
       })
-      .catch(err => console.log(err));
+      .catch(() => console.log("Error in filterTransactions"));
   }
 };
 
@@ -39,4 +43,4 @@ export default {
   getTransactions,
   updateTransaction,
   filterTransactions
-}
+};

@@ -1,60 +1,83 @@
 <template>
   <div>
     <button class="btn-edit" v-on:click="$refs.modal.open()">Edit</button>
-    <sweet-modal ref="modal" :enable-mobile-fullscreen="true" overlay-theme="light" title="Edit">
+    <sweet-modal
+      ref="modal"
+      :enable-mobile-fullscreen="true"
+      overlay-theme="light"
+      title="Edit"
+    >
       <form>
-        <label for="name">Full Name: </label><br>
-        <input id="name" class="name" type="text" name="name" :value="info.Name" disabled>
-        <br>
-        <label for="amount">Amount €: </label><br>
-        <input id="amount" class="amount" type="number" name="amount" step="0.01" min="0" v-model.number="info.Amount">
-        <br>
-        <label for="description">Descriptions: </label><br>
-        <textarea id="description" class="description" name="descriptions" v-model="info.Description"/>
-        <br><br>
-        <button slot="button" @click="closeModal" class="cancel-btn">Cancel</button>
-        <button slot="button" @click="updateData" class="save-btn">Save</button>
+        <label for="name">Full Name: </label><br />
+        <input
+          id="name"
+          class="name"
+          type="text"
+          name="name"
+          :value="info.Name"
+          disabled
+        />
+        <br />
+        <label for="amount">Amount €: </label><br />
+        <input
+          id="amount"
+          class="amount"
+          type="number"
+          name="amount"
+          step="0.01"
+          min="0"
+          v-model.number="info.Amount"
+        />
+        <br />
+        <label for="description">Descriptions: </label><br />
+        <textarea
+          id="description"
+          class="description"
+          name="descriptions"
+          v-model="info.Description"
+        />
+        <br /><br />
+        <button slot="button" @click="closeModal" class="cancel-btn">
+          Cancel
+        </button>
+        <button slot="button" @click="update" class="save-btn">Save</button>
       </form>
     </sweet-modal>
   </div>
 </template>
 
 <script>
-import { SweetModal, SweetModalTab } from 'sweet-modal-vue'
+import { SweetModal } from "sweet-modal-vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: 'Modal',
+  name: "Modal",
   components: {
-    SweetModal,
-    SweetModalTab
+    SweetModal
   },
   data() {
     return {
       info: this.transData
-    }
+    };
   },
   computed: {
-    ...mapGetters([
-      'transactions',
-      'userIndex'
-    ])
+    ...mapGetters(["transactions", "userIndex"])
   },
   methods: {
-    ...mapActions([
-      'updateTransaction'
-    ]),
+    ...mapActions(["updateTransaction"]),
     closeModal(e) {
       e.preventDefault();
       this.$refs.modal.close();
     },
     update(e) {
       this.closeModal(e);
-      if(this.userIndex != null) {
-        this.updateTransaction({id: this.userIndex, data: this.info});
+      if (this.userIndex != null) {
+        this.updateTransaction({ id: this.userIndex, data: this.info });
       } else {
-        const index = this.transactions.findIndex(element => {return element.ID == this.info.ID});
-        this.updateTransaction({id: index, data: this.info});
+        const index = this.transactions.findIndex(element => {
+          return element.ID == this.info.ID;
+        });
+        this.updateTransaction({ id: index, data: this.info });
       }
     }
   },
@@ -67,7 +90,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -84,7 +107,9 @@ $white: #fff;
   cursor: pointer;
   outline: none;
 }
-.cancel-btn, .save-btn, .delete-btn {
+.cancel-btn,
+.save-btn,
+.delete-btn {
   height: 40px;
   width: 80px;
   margin: 2px;
@@ -102,7 +127,7 @@ $white: #fff;
 .save-btn {
   background: $blue;
 }
-.cancel-btn { 
+.cancel-btn {
   background: rgb(28, 168, 75);
 }
 input,
@@ -123,9 +148,9 @@ textarea {
   padding: 2%;
 }
 @media only screen and (max-width: 575px) {
-  input, textarea {
+  input,
+  textarea {
     width: 100%;
   }
 }
-
 </style>

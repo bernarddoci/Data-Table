@@ -1,57 +1,78 @@
 <template>
   <div class="search">
-    <input type="text" v-model="name" @keyup.enter.prevent="filterData('Name', name)" placeholder="Search by name" />
-    <button class="search-btn" @click.prevent="filterData('Name', name)"><i class="icon-search"></i></button>
+    <input
+      type="text"
+      v-model="name"
+      @keyup.enter.prevent="filterData('Name', name)"
+      placeholder="Search by name"
+    />
+    <button class="search-btn" @click.prevent="filterData('Name', name)">
+      <i class="icon-search"></i>
+    </button>
     <button class="show-btn" @click="toggle">{{ showFilterLabel }}</button>
     <transition name="fade">
       <div class="search-filters" v-if="showFilter">
-        <input type="text" v-model="id" @keyup.enter.prevent="filterData('ID', id)" placeholder="Filter by id" />
-        <button class="search-btn" @click.prevent="filterData('ID', id)"><i class="icon-search"></i></button>
-        <input type="number" v-model.number="amount" @keyup.enter.prevent="filterData('Amount', amount)" placeholder="Filter by amount" />
-        <button class="search-btn" @click.prevent="filterData('Amount', amount)"><i class="icon-search"></i></button>
+        <input
+          type="text"
+          v-model="id"
+          @keyup.enter.prevent="filterData('ID', id)"
+          placeholder="Filter by id"
+        />
+        <button class="search-btn" @click.prevent="filterData('ID', id)">
+          <i class="icon-search"></i>
+        </button>
+        <input
+          type="number"
+          v-model.number="amount"
+          @keyup.enter.prevent="filterData('Amount', amount)"
+          placeholder="Filter by amount"
+        />
+        <button
+          class="search-btn"
+          @click.prevent="filterData('Amount', amount)"
+        >
+          <i class="icon-search"></i>
+        </button>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-import API from "@/util/API";
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 export default {
-  name: 'Search',
+  name: "Search",
   data() {
     return {
       showFilter: false,
       id: null,
-      name: '',
-      amount: ''
-    }
+      name: "",
+      amount: ""
+    };
   },
   methods: {
-    ...mapActions([
-      'filterTransactions'
-    ]),
+    ...mapActions(["filterTransactions"]),
     toggle() {
       this.showFilter = !this.showFilter;
     },
     filterData(path, value) {
-      this.filterTransactions({path, value})
+      this.filterTransactions({ path, value });
     }
   },
   computed: {
     showFilterLabel() {
-      return this.showFilter ? 'Hide Filter' : 'Show Filter';
+      return this.showFilter ? "Hide Filter" : "Show Filter";
     }
   }
-}
+};
 </script>
-
 
 <style lang="scss" scoped>
 .search {
   margin: 0 10%;
   text-align: left;
-  input, button {
+  input,
+  button {
     margin: 5px;
     outline: none;
     border: 1px solid #0191a9;
@@ -88,9 +109,10 @@ export default {
   .show-btn {
     position: relative;
     left: -43px;
-    background-color: #08C0A8;
+    background-color: #08c0a8;
   }
-  .fade-enter-active, .fade-leave-active {
+  .fade-enter-active,
+  .fade-leave-active {
     transition: opacity 1s;
   }
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {

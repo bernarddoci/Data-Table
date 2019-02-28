@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <div id="nav" v-if="!notFound">
       <router-link to="/">Home</router-link> |
       <router-link to="/data-table">Data Table</router-link>
     </div>
@@ -14,6 +14,16 @@ import Footer from "./views/Footer";
 export default {
   components: {
     appFooter: Footer
+  },
+  data() {
+    return {
+      notFound: false
+    };
+  },
+  watch: {
+    $route(val) {
+      val.name == "notFound" ? (this.notFound = true) : (this.notFound = false);
+    }
   }
 };
 </script>

@@ -11,7 +11,7 @@ export default new Vuex.Store({
     transactions: [],
     userIndex: null,
     loader: false
-  },  
+  },
   getters,
   mutations,
   actions

@@ -2,8 +2,8 @@
   <div>
     <Search />
     <div class="table">
-      <hr/>
-      <Loader v-if="loader"/>
+      <hr />
+      <Loader v-if="loader" />
       <div v-else>
         <div class="table-header">
           <div class="header-data hide-on-mobile id">ID</div>
@@ -13,14 +13,20 @@
           <div class="header-data amount">Amount</div>
           <div class="header-data edit">Edit</div>
         </div>
-        <div class="table-body" v-for='transaction in transactions' :key='transaction.ID'>
+        <div
+          class="table-body"
+          v-for="transaction in transactions"
+          :key="transaction.ID"
+        >
           <div class="body-data hide-on-mobile id">{{ transaction.ID }}</div>
           <div class="body-data name">{{ transaction.Name }}</div>
           <div class="body-data description">{{ transaction.Description }}</div>
-          <div class="body-data hide-on-mobile date">{{ dateFormat(transaction.Date) }}</div>
+          <div class="body-data hide-on-mobile date">
+            {{ dateFormat(transaction.Date) }}
+          </div>
           <div class="body-data amount">{{ transaction.Amount }} €</div>
           <div class="body-data edit">
-            <modal-edit :transData="transaction" :transactions="transactions"/>
+            <modal-edit :transData="transaction" :transactions="transactions" />
           </div>
         </div>
       </div>
@@ -41,17 +47,12 @@ export default {
     Loader
   },
   computed: {
-    ...mapGetters([
-      'transactions',
-      'loader'
-    ])
+    ...mapGetters(["transactions", "loader"])
   },
   methods: {
-    ...mapActions([
-      'getTransactions'
-    ]),
+    ...mapActions(["getTransactions"]),
     dateFormat(date) {
-      return new Date(date).toLocaleDateString('en-US');
+      return new Date(date).toLocaleDateString("en-US");
     }
   },
   created() {
@@ -88,7 +89,7 @@ $borderStyle: 1px solid #2c3e50;
   }
   .header-data,
   .body-data {
-    text-align: "left"; 
+    text-align: "left";
     margin: 1%;
   }
   .edit {

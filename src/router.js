@@ -16,11 +16,15 @@ export default new Router({
     {
       path: "/data-table",
       name: "dataTable",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "DataTable" */ "./views/DataTable.vue")
-    }
+    },
+    {
+      path: "/not-found",
+      name: "notFound",
+      component: () =>
+        import(/* webpackChunkName: "DataTable" */ "./views/NotFound.vue")
+    },
+    { path: "*", redirect: "/not-found" }
   ]
 });
